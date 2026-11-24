@@ -1,0 +1,4 @@
+The cat and the dog play in the garden.
+The cat, the dog, and the bird play in the garden.
+The CAT and the bird play; the cat rests.
+The dog and the bird play in the garden.
