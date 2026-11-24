@@ -33,7 +33,7 @@ typst compile doc/main.typ
 > This command will output to `doc/main.pdf` by default.
 
 The `typst.yaml` workflow automatically uploads `main.typ`'s resulting PDF as an
-artifact when a .typ file is edited, [check the latest runs here](https://github.com/FIU-COP-4555-Team-B/assignment3/actions/workflows/typst.yaml).
+artifact when a .typ file is edited, [check the latest runs here](https://github.com/FIU-COP-4555-Team-B/project2/actions/workflows/typst.yaml).
 
 ## License
 
