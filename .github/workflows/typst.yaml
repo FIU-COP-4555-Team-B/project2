@@ -17,7 +17,7 @@ jobs:
         run: sudo snap install typst
 
       - name: Typst Compile
-        run: typst compile doc/main.typ project2.pdf
+        run: typst compile --root=. doc/main.typ project2.pdf
 
       - name: Upload PDF Artifact
         uses: actions/upload-artifact@v7
