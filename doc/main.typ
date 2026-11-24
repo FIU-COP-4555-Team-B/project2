@@ -12,7 +12,10 @@
 #set heading(numbering: "1.1")
 
 #align(center)[
-  #text(size: 16pt, weight: "bold")[Cross-Paradigm Feature Evaluation via Gen AI]
+  #text(
+    size: 16pt,
+    weight: "bold",
+  )[Cross-Paradigm Feature Evaluation via Gen AI]
 
   #smallcaps[ Principles of Programming Languages  ] \
   Shirina Daniel, Gabriel Garcia, Marcelo Hernandez \
@@ -33,6 +36,9 @@ Marcelo Hernandez
 
 #pagebreak()
 
-= Problem C
+= Problem C - Haskell (Functional)
 
-X
+Gabriel Garcia
+
+Matrix math utility that performs matrix multiplication, transposition, and
+extracts diagonal elements.
