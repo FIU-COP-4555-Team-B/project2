@@ -62,8 +62,94 @@
   #datetime.today().display()
 ]
 
-#problem("Problem A", "TBD")[
-  Shirina Daniel
+#problem("Problem A", "Shirina Daniel")[
+  == Prompt
+  #set quote(block: true)
+  #quote()[like the implementation for problem b, could you implement problem a using the languages in src/a/ each in an idiomatic way]
+
+  === Go
+  #raw(read("../src/a/imperative.go"), lang: "go", block: true)
+
+  === Python
+  #raw(read("../src/a/object_oriented.py"), lang: "python", block: true)
+
+  === F\#
+  #raw(read("../src/a/functional.fsx"), lang: "fs", block: true)
+
+  == Evaluation
+
+  All scripts run. No changes seem necessary.
+
+  === State Management
+
+  *Go (imperative):* Go stores mutable state in the `total` accumulator and the
+  `items` slice. Each input record updates the total, and in-stock records are
+  appended to the slice. Sorting reorders that same slice in place. Unlike the C
+  implementation in Problem B, this program needs no explicit pointer
+  manipulation or manual memory cleanup.
+
+  *Python (object-oriented):* `Inventory` encapsulates a mutable `_items` list.
+  The leading underscore marks the list as internal by convention, not through
+  enforced access control. The `read` method appends `InventoryItem` objects.
+  Their frozen dataclass prevents normal field reassignment, but it does not
+  make the inventory list immutable. Methods operate on the list without
+  requiring getters or setters.
+
+  *F\# (functional):* F\# represents items with immutable records and stores
+  them in immutable lists. Filtering and sorting produce new lists rather than
+  changing the input. The total comes from a reduction instead of an explicitly
+  updated accumulator. Parsing and report construction remain separate from
+  console input and output.
+
+  === Control Flow
+
+  *Go (imperative):* An explicit loop reads input until end-of-file.
+  Conditionals validate fields, check overflow, and exclude out-of-stock records
+  from the listing. A comparison function directs stable sorting by price and
+  then name. A second loop prints the results. Error branches report a problem
+  and terminate the program.
+
+  *Python (object-oriented):* The entry point creates an `Inventory` and calls
+  its `read` and `write_report` methods. These calls organize behavior around
+  the object's state. Internally, loops read records and print items, while
+  generator expressions feed `sum` and `sorted`. A sorting key selects price
+  and name. The design needs neither subclasses nor overridden methods.
+
+  *F\# (functional):* Pipelines connect parsing, filtering, sorting, and
+  formatting. Higher-order functions such as `List.sumBy`, `List.filter`,
+  `List.sortBy`, and `List.map` perform the list traversals. Function composition
+  combines the blank-line test with negation. Pattern matching validates parsed
+  fields, and exception handlers report invalid input or overflow. The
+  implementation contains no explicit loops or recursion.
+
+  === Type System Role
+
+  *Go (imperative):* The `item` struct groups a `string` name with `int64`
+  quantity and price fields. Static typing checks the field and collection types
+  at compile time. Integer cents avoid floating-point rounding, but `int64` does
+  not guarantee nonnegative values or safe arithmetic. Parsing and explicit
+  overflow checks enforce those requirements at runtime.
+
+  *Python (object-oriented):* `InventoryItem` models an inventory record, and
+  `Inventory` groups the records with their operations. The classes do not form
+  an inheritance hierarchy. Python uses dynamic typing; annotations such as
+  `list[InventoryItem]` describe expected types but do not enforce them at
+  runtime. Input validation supplies those checks. Python's integers grow as
+  needed rather than imposing Go's fixed 64-bit arithmetic limit.
+
+  *F\# (functional):* The `Item` record is a product type that groups a name,
+  quantity, and price with statically checked field types. Type inference gives
+  the reporting transformation the type `Item list -> string` without an
+  explicit annotation. Tuple and array patterns support input validation; no
+  custom discriminated union is needed. As in Go, `int64` does not encode
+  nonnegativity. Parsing checks values, while checked arithmetic detects
+  overflow at runtime.
+
+  == AI Evaluation
+
+  - *Did the AI successfully write _idiomatic_ code for each paradigm?* Yes.
+  - *Any optimizations, edge-cases, vulnerabilities or anti-patterns the AI
+    introduced?* None that I could think of.
 ]
 
 #problem("Problem B", "Marcelo Hernandez")[

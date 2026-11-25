@@ -1,0 +1,6 @@
+Notebook 10 250
+Pencil 20 75
+Backpack 0 3500
+Eraser 5 75
+Ruler 4 100
+Marker 3 200
