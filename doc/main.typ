@@ -162,7 +162,55 @@ cleanup` to release allocations in one place.
     not _bad_.
 ]
 
-#problem("Problem C - Haskell (Functional)", "Gabriel Garcia")[
-  Matrix math utility that performs matrix multiplication, transposition, and
-  extracts diagonal elements.
+#problem("Problem C", "Gabriel Garcia")[
+  == Prompt
+
+  ```md
+  ## Problem
+
+  A matrix math utility that performs matrix multiplication, transposition, and extracts the diagonal elements.
+
+  ## Languages
+
+  Implement in three languages from the below groups:
+
+  - *Imperative:* C, Pascal, or Go
+  - *Object-Oriented:* Java, C++, or Python
+  - *Functional:* Haskell, ML, or F#
+
+  ## Design
+
+  Use idiomatic choices for each particular language and overall language
+  group, as applicable to the particular problem. These are some broad
+  guidelines, but are certainly _inexhaustive_:
+
+  - Generally: 
+    - DRY, YAGNI, separation of concerns, principle of least knowledge
+    - Favor simplicity and brevity
+    - Document appropriately, without excess
+    - Use /asd-ste-100 style of writing, and ommit `.` at the end of comments
+  - Imperative: Careful control flow and structure
+  - OOP:  SOLID principles
+  - Functional: Error handling, pattern matching, avoiding side effects
+
+  Given the matrix _and_ 'utility' aspect: 
+
+  - Use appropriate data types
+  - Validate inputs
+  - Have reasonable error handling
+  - Keep client API and developer ergonomics in mind
+
+
+  ## Requirements
+
+  > [!NOTE]
+  > Write all outputs in `./src/c/`!
+
+  - Read the documentation
+  - Include a justfile for quick usage, with three sub commands for `fn`, `oop`, and `imp`
+  - This machine has nix available, write a nix flake to load dependencies (via direnv)
+  - For tests/inputs, pipeing in input files as stdin is acceptable if file
+    handling would balloon code size or otherwise hide the goal of this problem
+    behind plumbing
+  ```
 ]
