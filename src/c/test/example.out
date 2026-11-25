@@ -1,9 +1,0 @@
-A * B:
-58 64
-139 154
-transpose(A):
-1 4
-2 5
-3 6
-diagonal(A):
-1 5
