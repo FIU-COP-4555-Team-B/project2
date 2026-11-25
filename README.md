@@ -19,7 +19,7 @@ implementation building instructions see the respective
 `src/<problem>/README.md`. To generate the document run:
 
 ```bash
-typst compile doc/main.typ
+typst compile doc/main.typ --root .
 ```
 
 > [!NOTE]
