@@ -300,6 +300,9 @@ cleanup` to release allocations in one place.
     behind plumbing
   ```
 
+  All implementations below compile/run, and have a couple of testfiles set up
+  to compare outputs. No adjustments were necessary to achieve the baseline.
+
   === Imperative: C
 
   #raw(read("../src/c/imperative.c"), lang: "c", block: true)
@@ -311,4 +314,81 @@ cleanup` to release allocations in one place.
   === Functional: Haskell
 
   #raw(read("../src/c/functional.hs"), lang: "haskell", block: true)
+
+  == Evaluation
+
+  #table(
+    columns: (auto, auto, auto, auto),
+    inset: 10pt,
+    align: horizon,
+    table.header([], [*Imperative*], [*Object-Oriented*], [*Functional*]),
+    [*State Management*],
+    [
+      Matrices are allocated on the heap and passed around through pointers.
+
+      The
+      input matrices are read through `Matrix *` values, then the calculation
+      functions accept `const Matrix *` to indicate they will _not_ modify those
+      inputs.
+
+      Each operation allocates a separate result and fills its values in
+      place. The multiplication loop also updates a running `sum` and `main` fress
+      all allocated matrices during cleanup
+    ],
+    [
+      `Matrix` keeps its row and column counts, and row-major values in private
+      fields. It also exposes dimensions through getters (`rows()`, `cols()`) and uses `operator()` to access elements.
+      It doesn't expose any setters (given the matrix utility part it is reasonable).
+    ],
+    [
+      `Matrix` values are immutable lists, and the calculations are pure
+      functions returning new results. `diagonal` uses recursion to take the first
+      element of each row while dropping one column for the next step. All side
+      effects are kept at the program boundary (`main` reads input and prints output)
+    ],
+
+    [*Control Flow*],
+    [
+      `main` reads two matrices, checks that they can be multiplied, then
+      computes the product, transpose, and diagonal in sequence.
+
+      Each operation uses nested loops to visit matrix elements, and when
+      encountering a failure (e.g. reading, dimension checking, allocation error),
+      the program reports an error and jumps to shared cleanup, or otherwise
+      prints the three results.
+    ],
+    [
+      `transpose()` and `diagonal()` are `Matrix` methods, while multiplication
+      and stream I/O are handled by overloaded functions. The program invokes
+      these directly, and avoids runtime polymorphism or virtual methods.
+    ],
+    [
+      Computation is structured via list comprehensions and higher-order functions: `multiply` combines `transpose`, `zipWith`, and `sum` to compute each cell, `diagonal` uses `map` recursively , and `run` uses function composition to format the result.
+      We also can see that `traverse`
+    ],
+
+    [*Type System*],
+    [
+      C's static types means that dimensions and indices are of `size_t` and
+      matrix elements `double`, while input dimensions and the exit status use
+      `int`. These types guide indexing, arithmetic, I/O, but require explicit
+      conversions when dimensions are passed to allocation.
+
+      C does not enforce matrix shape compatability through types, so this
+      implementation must check dimensions at runtime (unlike other languages) and use
+      `assert` for assumptions.
+    ],
+    [
+      The domain model has one custom class, `Matrix`, with a
+      `std::vector<double>` to store its values. There are no custom interfaces,
+      subclassses, or inheritance relationships.
+    ],
+    [
+      `Failure` is a sum type for invalid input and shape mismatches, while
+      `Either Failure` carries either an error or a result. `Matrix` is a type
+      synonym for `[[Double]]`, and tuples represent dimensions. Explicit
+      signatures are helpful here and make the main types clear, but Haskell
+      infers the types of local helpers and expressions
+    ],
+  )
 ]
