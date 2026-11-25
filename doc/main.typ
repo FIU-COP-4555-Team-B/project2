@@ -213,4 +213,16 @@ cleanup` to release allocations in one place.
     handling would balloon code size or otherwise hide the goal of this problem
     behind plumbing
   ```
+
+  === Imperative: C
+
+  #raw(read("../src/c/imperative.c"), lang: "c", block: true)
+
+  === Object-Oriented: C++
+
+  #raw(read("../src/c/object_oriented.cpp"), lang: "cpp", block: true)
+
+  === Functional: Haskell
+
+  #raw(read("../src/c/functional.hs"), lang: "haskell", block: true)
 ]

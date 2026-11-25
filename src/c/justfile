@@ -1,0 +1,58 @@
+warnings := "-Wall -Wextra -Wpedantic"
+
+# Show the recipes
+default:
+    @just --list
+
+# Run the functional version (Haskell)
+fn input="example.txt": _fn
+    @.build/fn < {{ input }}
+
+# Run the object-oriented version (C++)
+oop input="example.txt": _oop
+    @.build/oop < {{ input }}
+
+# Run the imperative version (C)
+imp input="example.txt": _imp
+    @.build/imp < {{ input }}
+
+# Compare each version with the expected results in test/
+test: _fn _oop _imp
+    #!/usr/bin/env bash
+    # A case with a .out file must pass, and a case with a .err file must fail
+    set -uo pipefail
+    failures=0
+    for program in fn oop imp; do
+        for input in test/*.in; do
+            case=${input%.in}
+            if [[ -f $case.out ]]; then
+                # Haskell writes 58.0 where C writes 58
+                actual=$(.build/$program < "$input" | sed -E 's/\.0( |$)/\1/g') &&
+                    [[ $actual == "$(< "$case.out")" ]]
+            else
+                ! actual=$(.build/$program < "$input" 2>&1 > /dev/null) &&
+                    [[ $actual == "$(< "$case.err")" ]]
+            fi || {
+                echo "FAIL: $program $case"
+                failures=$((failures + 1))
+            }
+        done
+    done
+    echo "$failures failures"
+    [[ $failures -eq 0 ]]
+
+# Remove the build files
+clean:
+    rm -rf .build
+
+_fn:
+    @mkdir -p .build
+    @ghc -Wall -O2 -outputdir .build/ghc -o .build/fn functional.hs > /dev/null
+
+_oop:
+    @mkdir -p .build
+    @c++ -std=c++20 {{ warnings }} -O2 object_oriented.cpp -o .build/oop
+
+_imp:
+    @mkdir -p .build
+    @cc -std=c11 {{ warnings }} -O2 imperative.c -o .build/imp
