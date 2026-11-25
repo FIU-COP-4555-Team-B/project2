@@ -322,7 +322,7 @@ cleanup` to release allocations in one place.
     inset: 10pt,
     align: horizon,
     table.header([], [*Imperative*], [*Object-Oriented*], [*Functional*]),
-    [*State Management*],
+    [*State*],
     [
       Matrices are allocated on the heap and passed around through pointers.
 
@@ -347,7 +347,7 @@ cleanup` to release allocations in one place.
       effects are kept at the program boundary (`main` reads input and prints output)
     ],
 
-    [*Control Flow*],
+    [*Flow*],
     [
       `main` reads two matrices, checks that they can be multiplied, then
       computes the product, transpose, and diagonal in sequence.
@@ -367,7 +367,7 @@ cleanup` to release allocations in one place.
       We also can see that `traverse`
     ],
 
-    [*Type System*],
+    [*Types*],
     [
       C's static types means that dimensions and indices are of `size_t` and
       matrix elements `double`, while input dimensions and the exit status use
